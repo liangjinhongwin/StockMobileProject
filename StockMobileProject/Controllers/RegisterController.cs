@@ -12,7 +12,7 @@ namespace StockMobileProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class RegisterController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
@@ -41,13 +41,7 @@ namespace StockMobileProject.Controllers
                     return BadRequest(result.Errors);
                 }
             }
-            else
-            {
-                var errors = ModelState
-                    .Select(x => x.Value.Errors)
-                    .Where(y => y.Count > 0);
-                return BadRequest(errors);
-            }
+            return BadRequest();
         }
     }
 }

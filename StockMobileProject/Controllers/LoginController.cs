@@ -19,7 +19,7 @@ namespace StockMobileProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IServiceProvider _serviceProvider;
@@ -40,12 +40,12 @@ namespace StockMobileProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> OnPostAsync([FromBody]LoginModel.InputModel inputModel)
+        public async Task<JsonResult> OnPostAsync([FromBody]LoginModel.InputModel inputModel)
         {
             dynamic jsonResponse = new JObject();
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(inputModel.Email.ToUpper(), inputModel.Password, inputModel.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(inputModel.Email.ToUpper(), inputModel.Password, inputModel.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     var UserManager = _serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -55,19 +55,17 @@ namespace StockMobileProject.Controllers
                         var tokenString = GenerateJSONWebToken(user);
                         jsonResponse.token = tokenString;
                         jsonResponse.status = "OK";
-                        return Ok(jsonResponse);
                     }
                 }
                 else if (result.IsLockedOut)
                 {
                     jsonResponse.token = "";
-                    jsonResponse.status = "Locked out!";
-                    return BadRequest(jsonResponse);
+                    jsonResponse.status = "Account has been locked out due to too many attempts.";
                 }
             }
             jsonResponse.token = "";
-            jsonResponse.status = "Invalid login!";
-            return BadRequest(jsonResponse);
+            jsonResponse.status = "Invalid login information.";
+            return Json(jsonResponse);
         }
 
         string GenerateJSONWebToken(IdentityUser user)
