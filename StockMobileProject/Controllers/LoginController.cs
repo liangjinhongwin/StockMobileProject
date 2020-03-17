@@ -40,16 +40,16 @@ namespace StockMobileProject.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> OnPostAsync([FromBody]LoginModel.InputModel inputModel)
+        public async Task<JsonResult> OnPostAsync([FromBody]LoginModel.InputModel input)
         {
             dynamic jsonResponse = new JObject();
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(inputModel.Email.ToUpper(), inputModel.Password, inputModel.RememberMe, lockoutOnFailure: true);
+                var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     var UserManager = _serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-                    var user = await UserManager.FindByEmailAsync(inputModel.Email);
+                    var user = await UserManager.FindByEmailAsync(input.Email);
                     if (user != null)
                     {
                         var tokenString = GenerateJSONWebToken(user);

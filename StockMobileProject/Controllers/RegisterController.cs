@@ -26,12 +26,12 @@ namespace StockMobileProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> OnPostAsync([FromBody]RegisterModel.InputModel inputModel)
+        public async Task<IActionResult> OnPostAsync([FromBody]RegisterModel.InputModel input)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = inputModel.Email, Email = inputModel.Email };
-                var result = await _userManager.CreateAsync(user, inputModel.Password);
+                var user = new IdentityUser { UserName = input.Email, Email = input.Email };
+                var result = await _userManager.CreateAsync(user, input.Password);
                 if (result.Succeeded)
                 {
                     return Ok();
