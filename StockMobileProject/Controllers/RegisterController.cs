@@ -14,11 +14,11 @@ namespace StockMobileProject.Controllers
     [ApiController]
     public class RegisterController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
 
         public RegisterController(
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -30,7 +30,7 @@ namespace StockMobileProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = input.Email, Email = input.Email };
+                var user = new ApplicationUser { UserName = input.Email, Email = input.Email, StartDate = DateTime.Now, Cash = 1000000 };
                 var result = await _userManager.CreateAsync(user, input.Password);
                 if (result.Succeeded)
                 {

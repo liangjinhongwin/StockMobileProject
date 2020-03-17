@@ -77,7 +77,7 @@ namespace StockMobileProject
                 });
                 c.CustomSchemaIds(i => i.FullName);
             });
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
