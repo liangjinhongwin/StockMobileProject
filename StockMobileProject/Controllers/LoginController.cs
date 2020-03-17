@@ -55,12 +55,14 @@ namespace StockMobileProject.Controllers
                         var tokenString = GenerateJSONWebToken(user);
                         jsonResponse.token = tokenString;
                         jsonResponse.status = "OK";
+                        return Json(jsonResponse);
                     }
                 }
                 else if (result.IsLockedOut)
                 {
                     jsonResponse.token = "";
                     jsonResponse.status = "Account has been locked out due to too many attempts.";
+                    return Json(jsonResponse);
                 }
             }
             jsonResponse.token = "";
