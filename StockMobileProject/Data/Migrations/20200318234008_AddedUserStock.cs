@@ -22,14 +22,9 @@ namespace StockMobileProject.Data.Migrations
                         name: "FK_UserStocks_AspNetUsers_Email",
                         column: x => x.Email,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Email",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserStocks_Email",
-                table: "UserStocks",
-                column: "Email");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

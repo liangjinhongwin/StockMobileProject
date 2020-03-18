@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StockMobileProject.Models;
 
 namespace StockMobileProject.Data
 {
@@ -26,6 +27,11 @@ namespace StockMobileProject.Data
         {
             modelBuilder.Entity<UserStock>()
                 .HasKey(c => new { c.Email, c.Symbol });
+            modelBuilder.Entity<UserStock>()
+                .HasOne(p => p.ApplicationUser)
+                .WithMany(p => p.Portfolio)
+                .HasForeignKey(fk => fk.Email)
+                .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);
 
         }

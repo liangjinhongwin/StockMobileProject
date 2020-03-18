@@ -9,7 +9,7 @@ using StockMobileProject.Data;
 namespace StockMobileProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200318042149_AddedUserStock")]
+    [Migration("20200318234008_AddedUserStock")]
     partial class AddedUserStock
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,21 +185,17 @@ namespace StockMobileProject.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("StockMobileProject.Data.UserStock", b =>
+            modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
                     b.Property<string>("Email");
 
                     b.Property<string>("Symbol");
-
-                    b.Property<string>("ApplicationUserId");
 
                     b.Property<bool>("IsWatched");
 
                     b.Property<int>("PurchasedCount");
 
                     b.HasKey("Email", "Symbol");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserStocks");
                 });
@@ -249,11 +245,12 @@ namespace StockMobileProject.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("StockMobileProject.Data.UserStock", b =>
+            modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Data.ApplicationUser", "ApplicationUser")
                         .WithMany("Portfolio")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("Email")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

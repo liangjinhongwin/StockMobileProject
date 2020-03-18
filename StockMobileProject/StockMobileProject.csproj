@@ -17,6 +17,8 @@
     <Compile Remove="Data\Migrations\20200317035157_InitialCreate.Designer.cs" />
     <Compile Remove="Data\Migrations\20200318000527_AddedUserStock.cs" />
     <Compile Remove="Data\Migrations\20200318000527_AddedUserStock.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200318233327_AddRelationship.cs" />
+    <Compile Remove="Data\Migrations\20200318233327_AddRelationship.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
