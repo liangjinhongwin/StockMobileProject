@@ -246,7 +246,7 @@ namespace StockMobileProject.Data.Migrations
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
                     b.HasOne("StockMobileProject.Data.ApplicationUser", "ApplicationUser")
-                        .WithMany("Portfolio")
+                        .WithMany("UserStocks")
                         .HasForeignKey("Email")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

@@ -13,7 +13,7 @@ namespace StockMobileProject.Data
         public DateTime StartDate { get; set; }
         public Decimal Cash { get; set; }
         public string Performance { get; set; }
-        public ICollection<UserStock> Portfolio { get; set; }
+        public ICollection<UserStock> UserStocks { get; set; }
     }
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -29,7 +29,7 @@ namespace StockMobileProject.Data
                 .HasKey(c => new { c.Email, c.Symbol });
             modelBuilder.Entity<UserStock>()
                 .HasOne(p => p.ApplicationUser)
-                .WithMany(p => p.Portfolio)
+                .WithMany(p => p.UserStocks)
                 .HasForeignKey(fk => fk.Email)
                 .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);

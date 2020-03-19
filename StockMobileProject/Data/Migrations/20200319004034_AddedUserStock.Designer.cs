@@ -9,7 +9,7 @@ using StockMobileProject.Data;
 namespace StockMobileProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200318234008_AddedUserStock")]
+    [Migration("20200319004034_AddedUserStock")]
     partial class AddedUserStock
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,7 +248,7 @@ namespace StockMobileProject.Data.Migrations
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
                     b.HasOne("StockMobileProject.Data.ApplicationUser", "ApplicationUser")
-                        .WithMany("Portfolio")
+                        .WithMany("UserStocks")
                         .HasForeignKey("Email")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
