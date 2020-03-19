@@ -22,13 +22,13 @@ namespace StockMobileProject.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserStock>()
-                .HasKey(p => new { p.Email, p.Symbol });
+                .HasKey(us => new { us.Email, us.Symbol });
 
             modelBuilder.Entity<UserStock>()
-                .HasOne(p => p.ApplicationUser)
-                .WithMany(p => p.Portfolio)
+                .HasOne(us => us.ApplicationUser)
+                .WithMany(au => au.UserStocks)
                 .HasForeignKey(fk => fk.Email)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

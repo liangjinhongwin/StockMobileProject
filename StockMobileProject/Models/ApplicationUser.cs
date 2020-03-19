@@ -13,6 +13,6 @@ namespace StockMobileProject.Models
         public string Performance { get; set; }
 
         // Child
-        public virtual ICollection<UserStock> Portfolio { get; set; }
+        public virtual ICollection<UserStock> UserStocks { get; set; }
     }
 }
