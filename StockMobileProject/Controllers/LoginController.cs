@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using StockMobileProject.Areas.Identity.Pages.Account;
 using StockMobileProject.Data;
+using StockMobileProject.Models;
 
 namespace StockMobileProject.Controllers
 {
@@ -21,13 +22,13 @@ namespace StockMobileProject.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IServiceProvider _serviceProvider;
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context;
 
         public LoginController(
-            SignInManager<IdentityUser> signInManager,
+            SignInManager<ApplicationUser> signInManager,
             IServiceProvider serviceProvider,
             IConfiguration config,
             ApplicationDbContext context
@@ -48,7 +49,7 @@ namespace StockMobileProject.Controllers
                 var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    var UserManager = _serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                    var UserManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                     var user = await UserManager.FindByEmailAsync(input.Email);
                     if (user != null)
                     {
@@ -70,7 +71,7 @@ namespace StockMobileProject.Controllers
             return Json(jsonResponse);
         }
 
-        string GenerateJSONWebToken(IdentityUser user)
+        string GenerateJSONWebToken(ApplicationUser user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
