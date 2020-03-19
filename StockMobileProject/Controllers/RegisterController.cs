@@ -31,7 +31,7 @@ namespace StockMobileProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = input.Email, Email = input.Email };
+                var user = new ApplicationUser { UserName = input.Email, Email = input.Email, StartDate = DateTime.Now, Cash = 1000000 };
                 var result = await _userManager.CreateAsync(user, input.Password);
                 if (result.Succeeded)
                 {
