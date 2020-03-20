@@ -42,20 +42,23 @@ namespace StockMobileProject.Controllers
         [HttpPost]
         public async Task<IActionResult> OnPostAsync([FromBody]LoginModel.InputModel input)
         {
-            var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                var UserManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var user = await UserManager.FindByEmailAsync(input.Email);
-                if (user != null)
+                var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
+                if (result.Succeeded)
                 {
-                    var tokenString = GenerateJSONWebToken(user);
-                    return Ok(new { token = tokenString, status = 200, detail = "OK." });
+                    var UserManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                    var user = await UserManager.FindByEmailAsync(input.Email);
+                    if (user != null)
+                    {
+                        var tokenString = GenerateJSONWebToken(user);
+                        return Ok(new { token = tokenString, status = 200, detail = "OK." });
+                    }
                 }
-            }
-            else if (result.IsLockedOut)
-            {
-                return BadRequest(new { status = 400, detail = "Account has been locked out due to too many attempts." });
+                else if (result.IsLockedOut)
+                {
+                    return BadRequest(new { status = 400, detail = "Account has been locked out due to too many attempts." });
+                }
             }
 
             return BadRequest(new { status = 400, detail = "Invalid login information." });
