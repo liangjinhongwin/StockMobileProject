@@ -41,34 +41,34 @@ namespace StockMobileProject.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> OnPostAsync([FromBody]LoginModel.InputModel input)
+        public async Task<IActionResult> OnPostAsync([FromBody]LoginModel.InputModel input)
         {
             dynamic jsonResponse = new JObject();
-            if (ModelState.IsValid)
+
+            var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
-                if (result.Succeeded)
+                var UserManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var user = await UserManager.FindByEmailAsync(input.Email);
+                if (user != null)
                 {
-                    var UserManager = _serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                    var user = await UserManager.FindByEmailAsync(input.Email);
-                    if (user != null)
-                    {
-                        var tokenString = GenerateJSONWebToken(user);
-                        jsonResponse.token = tokenString;
-                        jsonResponse.status = "OK";
-                        return Json(jsonResponse);
-                    }
-                }
-                else if (result.IsLockedOut)
-                {
-                    jsonResponse.token = "";
-                    jsonResponse.status = "Account has been locked out due to too many attempts.";
-                    return Json(jsonResponse);
+                    var tokenString = GenerateJSONWebToken(user);
+                    jsonResponse.token = tokenString;
+                    jsonResponse.status = 200;
+                    jsonResponse.detail = "OK.";
+                    return Ok(jsonResponse);
                 }
             }
-            jsonResponse.token = "";
-            jsonResponse.status = "Invalid login information.";
-            return Json(jsonResponse);
+            else if (result.IsLockedOut)
+            {
+                jsonResponse.status = 403;
+                jsonResponse.detail = "Account has been locked out due to too many attempts.";
+                return Forbid(jsonResponse);
+            }
+
+            jsonResponse.status = 400;
+            jsonResponse.detail = "Invalid login information.";
+            return BadRequest(jsonResponse);
         }
 
         string GenerateJSONWebToken(ApplicationUser user)
@@ -79,7 +79,6 @@ namespace StockMobileProject.Controllers
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
             var token = new JwtSecurityToken(
                 _config["Jwt:Issuer"],
