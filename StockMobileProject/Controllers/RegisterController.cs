@@ -39,6 +39,7 @@ namespace StockMobileProject.Controllers
             {
                 return BadRequest(result.Errors);
             }
+
         }
     }
 }

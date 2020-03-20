@@ -54,6 +54,7 @@ namespace StockMobileProject.Controllers
                     Symbol = s.Symbol
                 });
 
+            jsonResponse.stocks = watchedList.ToList();
             jsonResponse.status = 200;
             jsonResponse.detail = "OK.";
             return Ok(jsonResponse);
