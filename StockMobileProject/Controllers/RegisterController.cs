@@ -38,10 +38,10 @@ namespace StockMobileProject.Controllers
                 }
                 else
                 {
-                    return BadRequest(result.Errors);
+                    return BadRequest(new { status =400,detail="This email adress has been registered"});
                 }
             }
-            return BadRequest();
+            return BadRequest(new { status = 400, detail = "Input data is not valid" });
         }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using StockMobileProject.Areas.Identity.Pages.Account;
 using StockMobileProject.Data;
+using StockMobileProject.Models;
 
 namespace StockMobileProject.Controllers
 {
@@ -45,6 +46,7 @@ namespace StockMobileProject.Controllers
             dynamic jsonResponse = new JObject();
             if (ModelState.IsValid)
             {
+                
                 var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
@@ -54,19 +56,20 @@ namespace StockMobileProject.Controllers
                     {
                         var tokenString = GenerateJSONWebToken(user);
                         jsonResponse.token = tokenString;
-                        jsonResponse.status = "OK";
+                        jsonResponse.status = 200;
                         return Json(jsonResponse);
                     }
                 }
                 else if (result.IsLockedOut)
                 {
-                    jsonResponse.token = "";
-                    jsonResponse.status = "Account has been locked out due to too many attempts.";
+                    jsonResponse.status = 400;
+                    jsonResponse.detail = "Account has been locked out due to too many attempts.";
+                    
                     return Json(jsonResponse);
                 }
             }
-            jsonResponse.token = "";
-            jsonResponse.status = "Invalid login information.";
+            jsonResponse.status = 400;
+            jsonResponse.detail = "Invalid login information.";
             return Json(jsonResponse);
         }
 
