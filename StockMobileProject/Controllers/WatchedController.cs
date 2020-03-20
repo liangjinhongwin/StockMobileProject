@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using StockMobileProject.Data;
+using System;
 using System.Linq;
+using System.Security.Claims;
 
 namespace StockMobileProject.Controllers
 {
@@ -29,35 +30,21 @@ namespace StockMobileProject.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult getWatched()
         {
-            var email = HttpContext.User.Claims.ElementAt(0).Value;
-            var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
-            dynamic jsonResponse = new JObject();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var stocks = _context.UserStocks.Where(u => u.Id == userId).Select(u => u.IsWatched == true);
 
-            if (user.UserStocks == null)
+            if (stocks == null)
             {
-                jsonResponse.status = 404;
-                jsonResponse.detail = "No stock list for the user.";
-                return NotFound(jsonResponse);
+                return NotFound(new { status = 404, datail = "No watch list for the user." });
             }
 
-            if (user.UserStocks.Where(s => s.IsWatched == true) == null)
-            {
-                jsonResponse.status = 404;
-                jsonResponse.detail = "No watch list for the user.";
-                return NotFound(jsonResponse);
-            }
-
-            var watchedList = user.UserStocks
-                .Where(s => s.IsWatched == true)
+            var watchList = _context.UserStocks.Where(u => u.Id == userId && u.IsWatched == true)
                 .Select(s => new WatchedModel()
                 {
                     Symbol = s.Symbol
                 });
 
-            jsonResponse.stocks = watchedList.ToList();
-            jsonResponse.status = 200;
-            jsonResponse.detail = "OK.";
-            return Ok(jsonResponse);
+            return Ok(new { stocks = watchList.ToList(), status = 200, detail = "OK." });
         }
     }
 }

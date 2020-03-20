@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using StockMobileProject.Areas.Identity.Pages.Account;
 using StockMobileProject.Data;
 using StockMobileProject.Models;
@@ -43,8 +42,6 @@ namespace StockMobileProject.Controllers
         [HttpPost]
         public async Task<IActionResult> OnPostAsync([FromBody]LoginModel.InputModel input)
         {
-            dynamic jsonResponse = new JObject();
-
             var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
             if (result.Succeeded)
             {
@@ -53,22 +50,15 @@ namespace StockMobileProject.Controllers
                 if (user != null)
                 {
                     var tokenString = GenerateJSONWebToken(user);
-                    jsonResponse.token = tokenString;
-                    jsonResponse.status = 200;
-                    jsonResponse.detail = "OK.";
-                    return Ok(jsonResponse);
+                    return Ok(new { token = tokenString, status = 200, detail = "OK." });
                 }
             }
             else if (result.IsLockedOut)
             {
-                jsonResponse.status = 403;
-                jsonResponse.detail = "Account has been locked out due to too many attempts.";
-                return Forbid(jsonResponse);
+                return BadRequest(new { status = 400, detail = "Account has been locked out due to too many attempts." });
             }
 
-            jsonResponse.status = 400;
-            jsonResponse.detail = "Invalid login information.";
-            return BadRequest(jsonResponse);
+            return BadRequest(new { status = 400, detail = "Invalid login information." });
         }
 
         string GenerateJSONWebToken(ApplicationUser user)

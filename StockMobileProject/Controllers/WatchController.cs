@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using StockMobileProject.Data;
 
 namespace StockMobileProject.Controllers
@@ -34,16 +34,16 @@ namespace StockMobileProject.Controllers
         public IActionResult SetWatch([FromBody]WatchModel updatedStock)
         {
             var email = HttpContext.User.Claims.ElementAt(0).Value;
-            var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
-            dynamic jsonResponse = new JObject();
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var stock = _context.UserStocks.Where(u => u.Id == id).FirstOrDefault(u => u.Symbol == updatedStock.Symbol);
 
-            if (user.UserStocks == null && updatedStock.IsWatch == true)
+            if (stock == null && updatedStock.IsWatch == true)
             {
                 try
                 {
                     _context.UserStocks.Add(new Models.UserStock
                     {
-                        Email = email,
+                        Id = id,
                         Symbol = updatedStock.Symbol,
                         IsWatched = updatedStock.IsWatch,
                         PurchasedCount = 0
@@ -52,56 +52,32 @@ namespace StockMobileProject.Controllers
                 }
                 catch (Exception e)
                 {
-                    return BadRequest("1");
+                    return BadRequest(new { status = 400, detail = "Failed to create watch list." });
                 }
-
             }
             else
             {
-                var stock = user.UserStocks.Where(s => s.Symbol == updatedStock.Symbol).FirstOrDefault();
-                if (stock == null && updatedStock.IsWatch == true)
+                try
                 {
-                    try
+                    if (stock.PurchasedCount == 0 && updatedStock.IsWatch == false)
                     {
-                        _context.UserStocks.Add(new Models.UserStock
-                        {
-                            Email = user.Email,
-                            Symbol = updatedStock.Symbol,
-                            IsWatched = true
-                        });
-
+                        _context.UserStocks.Remove(stock);
                         _context.SaveChanges();
                     }
-                    catch (Exception e)
+                    else
                     {
-                        return BadRequest("2");
+                        stock.IsWatched = updatedStock.IsWatch;
+                        _context.SaveChanges();
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    try
-                    {
-                        if (stock.PurchasedCount == 0 && updatedStock.IsWatch == false)
-                        {
-                            _context.UserStocks.Remove(stock);
-                            _context.SaveChanges();
-                        }
-                        else
-                        {
-                            stock.IsWatched = updatedStock.IsWatch;
-                            _context.SaveChanges();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        return BadRequest("3");
-                    }
+                    return BadRequest(new { status = 400, detail = "Failed to update watch list." });
                 }
+
             }
 
-            jsonResponse.status = 200;
-            jsonResponse.detail = "Ok.";
-            return Ok(jsonResponse);
+            return Ok();
         }
     }
 }

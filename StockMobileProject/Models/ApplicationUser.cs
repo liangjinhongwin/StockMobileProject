@@ -9,7 +9,6 @@ namespace StockMobileProject.Models
     public class ApplicationUser : IdentityUser
     {
         public DateTime StartDate { get; set; }
-        public decimal Cash { get; set; }
         public string Performance { get; set; }
 
         // Child

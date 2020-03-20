@@ -21,13 +21,16 @@ namespace StockMobileProject.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>()
+                .HasKey(au => au.Id);
+
             modelBuilder.Entity<UserStock>()
-                .HasKey(us => new { us.Email, us.Symbol });
+                .HasKey(us => new { us.Id, us.Symbol });
 
             modelBuilder.Entity<UserStock>()
                 .HasOne(us => us.ApplicationUser)
                 .WithMany(au => au.UserStocks)
-                .HasForeignKey(fk => fk.Email)
+                .HasForeignKey(fk => fk.Id)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

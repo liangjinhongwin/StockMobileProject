@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockMobileProject.Data;
 
-namespace StockMobileProject.Migrations
+namespace StockMobileProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200319053311_AddedUserCustomProperties")]
-    partial class AddedUserCustomProperties
+    [Migration("20200320084853_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -136,8 +136,6 @@ namespace StockMobileProject.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<decimal>("Cash");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -185,6 +183,21 @@ namespace StockMobileProject.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("Symbol");
+
+                    b.Property<bool>("IsWatched");
+
+                    b.Property<int>("PurchasedCount");
+
+                    b.HasKey("Id", "Symbol");
+
+                    b.ToTable("UserStocks");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -228,6 +241,14 @@ namespace StockMobileProject.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
+                {
+                    b.HasOne("StockMobileProject.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

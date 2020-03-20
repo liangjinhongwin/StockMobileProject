@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace StockMobileProject.Migrations
+namespace StockMobileProject.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -39,7 +39,9 @@ namespace StockMobileProject.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    Performance = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -152,6 +154,26 @@ namespace StockMobileProject.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserStocks",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Symbol = table.Column<string>(nullable: false),
+                    IsWatched = table.Column<bool>(nullable: false),
+                    PurchasedCount = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserStocks", x => new { x.Id, x.Symbol });
+                    table.ForeignKey(
+                        name: "FK_UserStocks_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -206,6 +228,9 @@ namespace StockMobileProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserStocks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

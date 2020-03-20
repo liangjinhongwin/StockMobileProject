@@ -2,17 +2,15 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockMobileProject.Data;
 
-namespace StockMobileProject.Migrations
+namespace StockMobileProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200319053533_AddedUserStocks")]
-    partial class AddedUserStocks
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,8 +134,6 @@ namespace StockMobileProject.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<decimal>("Cash");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -187,7 +183,7 @@ namespace StockMobileProject.Migrations
 
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
-                    b.Property<string>("Email");
+                    b.Property<string>("Id");
 
                     b.Property<string>("Symbol");
 
@@ -195,7 +191,7 @@ namespace StockMobileProject.Migrations
 
                     b.Property<int>("PurchasedCount");
 
-                    b.HasKey("Email", "Symbol");
+                    b.HasKey("Id", "Symbol");
 
                     b.ToTable("UserStocks");
                 });
@@ -249,7 +245,7 @@ namespace StockMobileProject.Migrations
                 {
                     b.HasOne("StockMobileProject.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("UserStocks")
-                        .HasForeignKey("Email")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

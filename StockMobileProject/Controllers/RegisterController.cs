@@ -29,16 +29,20 @@ namespace StockMobileProject.Controllers
         [HttpPost]
         public async Task<IActionResult> OnPostAsync([FromBody]RegisterModel.InputModel input)
         {
-            var user = new ApplicationUser { UserName = input.Email, Email = input.Email, StartDate = DateTime.Now, Cash = 1000000 };
-            var result = await _userManager.CreateAsync(user, input.Password);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                return Ok();
+                var user = new ApplicationUser { UserName = input.Email, Email = input.Email, StartDate = DateTime.Now };
+                var result = await _userManager.CreateAsync(user, input.Password);
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest(new { status = 400, detail = "This email adress has been registered" });
+                }
             }
-            else
-            {
-                return BadRequest(result.Errors);
-            }
+            return BadRequest(new { status = 400, detail = "Input data is not valid" });
 
         }
     }
