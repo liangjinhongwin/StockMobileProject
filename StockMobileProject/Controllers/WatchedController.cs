@@ -31,18 +31,17 @@ namespace StockMobileProject.Controllers
         public IActionResult getWatched()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var stocks = _context.UserStocks.Where(u => u.Id == userId).Select(u => u.IsWatched == true);
+            var stocks = _context.UserStocks.Where(u => u.Id == userId && u.IsWatched == true);
 
-            if (stocks == null)
+            if (stocks == null || stocks.Count() == 0)
             {
                 return NotFound(new { status = 404, datail = "No watch list for the user." });
             }
 
-            var watchList = _context.UserStocks.Where(u => u.Id == userId && u.IsWatched == true)
-                .Select(s => new WatchedModel()
-                {
-                    Symbol = s.Symbol
-                });
+            var watchList = stocks.Select(s => new WatchedModel()
+            {
+                Symbol = s.Symbol
+            });
 
             return Ok(new { stocks = watchList.ToList(), status = 200, detail = "OK." });
         }
