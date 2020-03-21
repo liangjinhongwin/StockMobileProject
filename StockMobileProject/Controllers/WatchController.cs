@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -17,7 +17,7 @@ namespace StockMobileProject.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public WatchController(ApplicationDbContext context)
+        public WatchController (ApplicationDbContext context)
         {
             _context = context;
         }
@@ -31,13 +31,13 @@ namespace StockMobileProject.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult SetWatch([FromBody]WatchModel updatedStock)
+        public IActionResult SetWatch ([FromBody]WatchModel updatedStock)
         {
             var email = HttpContext.User.Claims.ElementAt(0).Value;
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var stock = _context.UserStocks.Where(u => u.Id == id).FirstOrDefault(u => u.Symbol == updatedStock.Symbol);
 
-            if (stock == null && updatedStock.IsWatch == true)
+            if ( stock == null && updatedStock.IsWatch == true )
             {
                 try
                 {
@@ -50,7 +50,7 @@ namespace StockMobileProject.Controllers
                     });
                     _context.SaveChanges();
                 }
-                catch (Exception e)
+                catch ( Exception e )
                 {
                     return BadRequest(new { status = 400, detail = "Failed to create watch list." });
                 }
@@ -59,7 +59,7 @@ namespace StockMobileProject.Controllers
             {
                 try
                 {
-                    if (stock.PurchasedCount == 0 && updatedStock.IsWatch == false)
+                    if ( stock.PurchasedCount == 0 && updatedStock.IsWatch == false )
                     {
                         _context.UserStocks.Remove(stock);
                         _context.SaveChanges();
@@ -70,7 +70,7 @@ namespace StockMobileProject.Controllers
                         _context.SaveChanges();
                     }
                 }
-                catch (Exception e)
+                catch ( Exception e )
                 {
                     return BadRequest(new { status = 400, detail = "Failed to update watch list." });
                 }

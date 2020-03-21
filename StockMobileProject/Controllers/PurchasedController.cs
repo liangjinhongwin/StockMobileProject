@@ -17,7 +17,7 @@ namespace StockMobileProject.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public PurchasedController(ApplicationDbContext context)
+        public PurchasedController (ApplicationDbContext context)
         {
             _context = context;
         }
@@ -31,12 +31,12 @@ namespace StockMobileProject.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult getPurchased()
+        public IActionResult getPurchased ()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var stocks = _context.UserStocks.Where(u => u.Id == userId && u.PurchasedCount > 0);
 
-            if (stocks == null || stocks.Count() == 0)
+            if ( stocks == null || stocks.Count() == 0 )
             {
                 return NotFound(new { status = 404, datail = "No purchased list for the user." });
             }

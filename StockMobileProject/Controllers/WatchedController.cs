@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,7 @@ namespace StockMobileProject.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public WatchedController(ApplicationDbContext context)
+        public WatchedController (ApplicationDbContext context)
         {
             _context = context;
         }
@@ -28,12 +28,12 @@ namespace StockMobileProject.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult getWatched()
+        public IActionResult getWatched ()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var stocks = _context.UserStocks.Where(u => u.Id == userId && u.IsWatched == true);
 
-            if (stocks == null || stocks.Count() == 0)
+            if ( stocks == null || stocks.Count() == 0 )
             {
                 return NotFound(new { status = 404, datail = "No watch list for the user." });
             }
