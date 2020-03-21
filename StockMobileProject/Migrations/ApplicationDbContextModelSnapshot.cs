@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockMobileProject.Data;
 
-namespace StockMobileProject.Data.Migrations
+namespace StockMobileProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -127,7 +127,7 @@ namespace StockMobileProject.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("StockMobileProject.Data.ApplicationUser", b =>
+            modelBuilder.Entity("StockMobileProject.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -185,7 +185,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
-                    b.Property<string>("Email");
+                    b.Property<string>("Id");
 
                     b.Property<string>("Symbol");
 
@@ -193,7 +193,7 @@ namespace StockMobileProject.Data.Migrations
 
                     b.Property<int>("PurchasedCount");
 
-                    b.HasKey("Email", "Symbol");
+                    b.HasKey("Id", "Symbol");
 
                     b.ToTable("UserStocks");
                 });
@@ -208,7 +208,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -216,7 +216,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -229,7 +229,7 @@ namespace StockMobileProject.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -237,7 +237,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -245,9 +245,9 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser", "ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("UserStocks")
-                        .HasForeignKey("Email")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
