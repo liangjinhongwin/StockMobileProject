@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using StockMobileProject.Areas.Identity.Pages.Account;
 using StockMobileProject.Data;
+using StockMobileProject.Models;
 
 namespace StockMobileProject.Controllers
 {
@@ -40,11 +40,11 @@ namespace StockMobileProject.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> OnPostAsync([FromBody]LoginModel.InputModel input)
+        public async Task<IActionResult> OnPostAsync([FromBody]LoginModel.InputModel input)
         {
-            dynamic jsonResponse = new JObject();
             if (ModelState.IsValid)
             {
+                
                 var result = await _signInManager.PasswordSignInAsync(input.Email.ToUpper(), input.Password, input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
@@ -53,21 +53,34 @@ namespace StockMobileProject.Controllers
                     if (user != null)
                     {
                         var tokenString = GenerateJSONWebToken(user);
+<<<<<<< HEAD
                         jsonResponse.token = tokenString;
-                        jsonResponse.status = "OK";
+                        jsonResponse.status = 200;
                         return Json(jsonResponse);
+=======
+                        return Ok(new { token = tokenString, status = 200, detail = "OK." });
+>>>>>>> branch-kimo
                     }
                 }
                 else if (result.IsLockedOut)
                 {
-                    jsonResponse.token = "";
-                    jsonResponse.status = "Account has been locked out due to too many attempts.";
+<<<<<<< HEAD
+                    jsonResponse.status = 400;
+                    jsonResponse.detail = "Account has been locked out due to too many attempts.";
+                    
                     return Json(jsonResponse);
                 }
             }
-            jsonResponse.token = "";
-            jsonResponse.status = "Invalid login information.";
+            jsonResponse.status = 400;
+            jsonResponse.detail = "Invalid login information.";
             return Json(jsonResponse);
+=======
+                    return BadRequest(new { status = 400, detail = "Account has been locked out due to too many attempts." });
+                }
+            }
+
+            return BadRequest(new { status = 400, detail = "Invalid login information." });
+>>>>>>> branch-kimo
         }
 
         string GenerateJSONWebToken(ApplicationUser user)

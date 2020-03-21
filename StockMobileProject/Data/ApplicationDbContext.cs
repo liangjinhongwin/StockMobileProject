@@ -8,7 +8,11 @@ using StockMobileProject.Models;
 
 namespace StockMobileProject.Data
 {
+<<<<<<< HEAD
     public class ApplicationUser : IdentityUser
+=======
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+>>>>>>> branch-kimo
     {
         public DateTime StartDate { get; set; }
         public Decimal Cash { get; set; }
@@ -23,6 +27,8 @@ namespace StockMobileProject.Data
         {
         }
 
+        public DbSet<UserStock> UserStocks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserStock>()
@@ -34,6 +40,20 @@ namespace StockMobileProject.Data
                 .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);
 
+<<<<<<< HEAD
+=======
+            modelBuilder.Entity<ApplicationUser>()
+                .HasKey(au => au.Id);
+
+            modelBuilder.Entity<UserStock>()
+                .HasKey(us => new { us.Id, us.Symbol });
+
+            modelBuilder.Entity<UserStock>()
+                .HasOne(us => us.ApplicationUser)
+                .WithMany(au => au.UserStocks)
+                .HasForeignKey(fk => fk.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+>>>>>>> branch-kimo
         }
     }
 }
