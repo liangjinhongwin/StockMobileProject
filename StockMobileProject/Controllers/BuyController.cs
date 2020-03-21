@@ -55,6 +55,17 @@ namespace StockMobileProject.Controllers
                             PurchasedCount = purchaseOrder.Count
                         });
                         user.Cash -= ( purchaseOrder.Count * purchaseOrder.CurrentPrice );
+                        _context.SaveChanges();
+
+                        return Ok(new
+                        {
+                            CurrentCash = user.Cash,
+                            Symbol = purchaseOrder.Symbol,
+                            Purchased = purchaseOrder.Count,
+                            TotalPurchased = purchaseOrder.Count,
+                            status = 200,
+                            detail = "Your purchase order has been processed"
+                        });
                     }
                     catch ( Exception e )
                     {
@@ -67,23 +78,24 @@ namespace StockMobileProject.Controllers
                     {
                         stock.PurchasedCount += purchaseOrder.Count;
                         user.Cash -= ( purchaseOrder.Count * purchaseOrder.CurrentPrice );
+                        _context.SaveChanges();
+
+                        return Ok(new
+                        {
+                            CurrentCash = user.Cash,
+                            Symbol = purchaseOrder.Symbol,
+                            Purchased = purchaseOrder.Count,
+                            TotalPurchased = stock.PurchasedCount,
+                            status = 200,
+                            detail = "Your purchase order has been processed"
+                        });
                     }
                     catch ( Exception e )
                     {
                         return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
                     }
                 }
-                _context.SaveChanges();
 
-                return Ok(new
-                {
-                    CurrentCash = user.Cash,
-                    Symbol = purchaseOrder.Symbol,
-                    Purchased = purchaseOrder.Count,
-                    TotalPurchased = stock.PurchasedCount,
-                    status = 200,
-                    detail = "Your purchase order has been processed"
-                });
             }
             else
             {
