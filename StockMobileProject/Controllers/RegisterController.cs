@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StockMobileProject.Areas.Identity.Pages.Account;
 using StockMobileProject.Data;
-using StockMobileProject.Models;
 
 namespace StockMobileProject.Controllers
 {
@@ -39,18 +38,10 @@ namespace StockMobileProject.Controllers
                 }
                 else
                 {
-<<<<<<< HEAD
                     return BadRequest(new { status =400,detail="This email adress has been registered"});
                 }
             }
             return BadRequest(new { status = 400, detail = "Input data is not valid" });
-=======
-                    return BadRequest(new { status = 400, detail = "This email adress has been registered" });
-                }
-            }
-            return BadRequest(new { status = 400, detail = "Input data is not valid" });
-
->>>>>>> branch-kimo
         }
     }
 }

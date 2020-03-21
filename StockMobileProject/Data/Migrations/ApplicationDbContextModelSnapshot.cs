@@ -127,11 +127,7 @@ namespace StockMobileProject.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("StockMobileProject.Data.ApplicationUser", b =>
-=======
-            modelBuilder.Entity("StockMobileProject.Models.ApplicationUser", b =>
->>>>>>> branch-kimo
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -189,11 +185,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
-<<<<<<< HEAD
                     b.Property<string>("Email");
-=======
-                    b.Property<string>("Id");
->>>>>>> branch-kimo
 
                     b.Property<string>("Symbol");
 
@@ -201,11 +193,7 @@ namespace StockMobileProject.Data.Migrations
 
                     b.Property<int>("PurchasedCount");
 
-<<<<<<< HEAD
                     b.HasKey("Email", "Symbol");
-=======
-                    b.HasKey("Id", "Symbol");
->>>>>>> branch-kimo
 
                     b.ToTable("UserStocks");
                 });
@@ -220,11 +208,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-<<<<<<< HEAD
                     b.HasOne("StockMobileProject.Data.ApplicationUser")
-=======
-                    b.HasOne("StockMobileProject.Models.ApplicationUser")
->>>>>>> branch-kimo
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -232,11 +216,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-<<<<<<< HEAD
                     b.HasOne("StockMobileProject.Data.ApplicationUser")
-=======
-                    b.HasOne("StockMobileProject.Models.ApplicationUser")
->>>>>>> branch-kimo
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -249,11 +229,7 @@ namespace StockMobileProject.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-<<<<<<< HEAD
                     b.HasOne("StockMobileProject.Data.ApplicationUser")
-=======
-                    b.HasOne("StockMobileProject.Models.ApplicationUser")
->>>>>>> branch-kimo
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -261,11 +237,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-<<<<<<< HEAD
                     b.HasOne("StockMobileProject.Data.ApplicationUser")
-=======
-                    b.HasOne("StockMobileProject.Models.ApplicationUser")
->>>>>>> branch-kimo
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -273,15 +245,9 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
                 {
-<<<<<<< HEAD
                     b.HasOne("StockMobileProject.Data.ApplicationUser", "ApplicationUser")
                         .WithMany("UserStocks")
                         .HasForeignKey("Email")
-=======
-                    b.HasOne("StockMobileProject.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("UserStocks")
-                        .HasForeignKey("Id")
->>>>>>> branch-kimo
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
