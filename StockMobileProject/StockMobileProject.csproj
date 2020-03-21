@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Remove="Areas\Identity\Services\**" />
     <Content Remove="Areas\Identity\Services\**" />
     <EmbeddedResource Remove="Areas\Identity\Services\**" />
@@ -25,8 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-=======
->>>>>>> branch-kimo
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
