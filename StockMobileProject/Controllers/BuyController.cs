@@ -40,47 +40,60 @@ namespace StockMobileProject.Controllers
             var stock = _context.UserStocks.Where(u => u.Id == id).FirstOrDefault(u => u.Symbol == purchaseOrder.Symbol);
             ApplicationUser user = _context.Users.Where(u => u.Id == id).FirstOrDefault(u => u.Cash >= 0);
 
-            if ( stock == null )
+            if (user.Cash >= purchaseOrder.CurrentPrice * purchaseOrder.Count)
             {
-                try
+                //CAN'T BUY
+                if ( stock == null )
                 {
-                    _context.UserStocks.Add(new Models.UserStock
+                    try
                     {
-                        Id = id,
-                        Symbol = purchaseOrder.Symbol,
-                        IsWatched = true,
-                        PurchasedCount = purchaseOrder.Count
-                    });
-                    user.Cash -= ( purchaseOrder.Count * purchaseOrder.CurrentPrice );
+                        _context.UserStocks.Add(new Models.UserStock
+                        {
+                            Id = id,
+                            Symbol = purchaseOrder.Symbol,
+                            IsWatched = true,
+                            PurchasedCount = purchaseOrder.Count
+                        });
+                        user.Cash -= ( purchaseOrder.Count * purchaseOrder.CurrentPrice );
+                    }
+                    catch ( Exception e )
+                    {
+                        return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
+                    }
                 }
-                catch ( Exception e )
+                else
                 {
-                    return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
+                    try
+                    {
+                        stock.PurchasedCount += purchaseOrder.Count;
+                        user.Cash -= ( purchaseOrder.Count * purchaseOrder.CurrentPrice );
+                    }
+                    catch ( Exception e )
+                    {
+                        return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
+                    }
                 }
+                _context.SaveChanges();
+
+                return Ok(new
+                {
+                    CurrentCash = user.Cash,
+                    Symbol = purchaseOrder.Symbol,
+                    Purchased = purchaseOrder.Count,
+                    TotalPurchased = stock.PurchasedCount,
+                    status = 200,
+                    detail = "Your purchase order has been processed"
+                });
             }
             else
             {
-                try
+                return BadRequest(new
                 {
-                    stock.PurchasedCount += purchaseOrder.Count;
-                    user.Cash -= ( purchaseOrder.Count * purchaseOrder.CurrentPrice );
-                }
-                catch ( Exception e )
-                {
-                    return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
-                }
+                    status = 400,
+                    detail = "You don't have enough cash to process this purchase order."
+                });
             }
-            _context.SaveChanges();
-
-            return Ok(new
-            {
-                CurrentCash = user.Cash,
-                Symbol = purchaseOrder.Symbol,
-                Purchased = purchaseOrder.Count,
-                TotalPurchased = stock.PurchasedCount,
-                status = 200,
-                detail = "Your purchase has been processed"
-            });
         }
+            
     }
 }
