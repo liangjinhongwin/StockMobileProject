@@ -42,7 +42,6 @@ namespace StockMobileProject.Controllers
 
             if (user.Cash >= purchaseOrder.CurrentPrice * purchaseOrder.Count)
             {
-                //CAN'T BUY
                 if ( stock == null )
                 {
                     try
@@ -67,9 +66,13 @@ namespace StockMobileProject.Controllers
                             detail = "Your purchase order has been processed"
                         });
                     }
-                    catch ( Exception e )
+                    catch ( Exception )
                     {
-                        return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
+                        return BadRequest(new 
+                        { 
+                            status = 400, 
+                            detail = "Failed to purchase stock." 
+                        });
                     }
                 }
                 else
@@ -90,9 +93,13 @@ namespace StockMobileProject.Controllers
                             detail = "Your purchase order has been processed"
                         });
                     }
-                    catch ( Exception e )
+                    catch ( Exception )
                     {
-                        return BadRequest(new { status = 400, detail = "Failed to purchase stock." });
+                        return BadRequest(new 
+                        { 
+                            status = 400, 
+                            detail = "Failed to purchase stock." 
+                        });
                     }
                 }
 
