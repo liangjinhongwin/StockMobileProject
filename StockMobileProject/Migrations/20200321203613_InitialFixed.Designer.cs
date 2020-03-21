@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockMobileProject.Data;
 
-namespace StockMobileProject.Data.Migrations
+namespace StockMobileProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200317233621_AddedCustomUserProperties")]
-    partial class AddedCustomUserProperties
+    [Migration("20200321203613_InitialFixed")]
+    partial class InitialFixed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,7 +129,7 @@ namespace StockMobileProject.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("StockMobileProject.Data.ApplicationUser", b =>
+            modelBuilder.Entity("StockMobileProject.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -185,6 +185,21 @@ namespace StockMobileProject.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
+                {
+                    b.Property<string>("Id");
+
+                    b.Property<string>("Symbol");
+
+                    b.Property<bool>("IsWatched");
+
+                    b.Property<int>("PurchasedCount");
+
+                    b.HasKey("Id", "Symbol");
+
+                    b.ToTable("UserStocks");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -195,7 +210,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -203,7 +218,7 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -216,7 +231,7 @@ namespace StockMobileProject.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -224,10 +239,18 @@ namespace StockMobileProject.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("StockMobileProject.Data.ApplicationUser")
+                    b.HasOne("StockMobileProject.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("StockMobileProject.Models.UserStock", b =>
+                {
+                    b.HasOne("StockMobileProject.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

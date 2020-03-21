@@ -6,27 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Remove="Areas\Identity\Services\**" />
-    <Content Remove="Areas\Identity\Services\**" />
-    <EmbeddedResource Remove="Areas\Identity\Services\**" />
-    <None Remove="Areas\Identity\Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Data\Migrations\20200317035157_InitialCreate.cs" />
-    <Compile Remove="Data\Migrations\20200317035157_InitialCreate.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200318000527_AddedUserStock.cs" />
-    <Compile Remove="Data\Migrations\20200318000527_AddedUserStock.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200318233327_AddRelationship.cs" />
-    <Compile Remove="Data\Migrations\20200318233327_AddRelationship.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200318234008_AddedUserStock.cs" />
-    <Compile Remove="Data\Migrations\20200318234008_AddedUserStock.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-=======
->>>>>>> branch-kimo
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace StockMobileProject.Data.Migrations
+namespace StockMobileProject.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialFixed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,6 +41,7 @@ namespace StockMobileProject.Data.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
+                    Cash = table.Column<decimal>(nullable: false),
                     Performance = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
