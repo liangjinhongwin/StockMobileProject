@@ -39,18 +39,10 @@ namespace StockMobileProject.Controllers
                 }
                 else
                 {
-//<<<<<<< HEAD
-//                    return BadRequest(new { status =400,detail="This email adress has been registered"});
-//                }
-//            }
-//            return BadRequest(new { status = 400, detail = "Input data is not valid" });
-//=======
                     return BadRequest(new { status = 400, detail = "This email adress has been registered" });
                 }
             }
             return BadRequest(new { status = 400, detail = "Input data is not valid" });
-
-//>>>>>>> branch-kimo
         }
     }
 }
