@@ -53,34 +53,16 @@ namespace StockMobileProject.Controllers
                     if (user != null)
                     {
                         var tokenString = GenerateJSONWebToken(user);
-//<<<<<<< HEAD
-//                        jsonResponse.token = tokenString;
-//                        jsonResponse.status = 200;
-//                        return Json(jsonResponse);
-//=======
                         return Ok(new { token = tokenString, status = 200, detail = "OK." });
-//>>>>>>> branch-kimo
                     }
                 }
                 else if (result.IsLockedOut)
                 {
-//<<<<<<< HEAD
-//                    jsonResponse.status = 400;
-//                    jsonResponse.detail = "Account has been locked out due to too many attempts.";
-                    
-//                    return Json(jsonResponse);
-//                }
-//            }
-//            jsonResponse.status = 400;
-//            jsonResponse.detail = "Invalid login information.";
-//            return Json(jsonResponse);
-//=======
                     return BadRequest(new { status = 400, detail = "Account has been locked out due to too many attempts." });
                 }
             }
 
             return BadRequest(new { status = 400, detail = "Invalid login information." });
-//>>>>>>> branch-kimo
         }
 
         string GenerateJSONWebToken(ApplicationUser user)
