@@ -37,7 +37,7 @@ namespace StockMobileProject.Controllers
         {
             var email = HttpContext.User.Claims.ElementAt(0).Value;
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var stock = _context.UserStocks.Where(u => u.Id == id).FirstOrDefault(u => u.Symbol == purchaseOrder.Symbol);
+            var stock = _context.UserStocks.Where(u => u.Id == id).FirstOrDefault(u => u.Symbol == sellOrder.Symbol);
             ApplicationUser user = _context.Users.Where(u => u.Id == id).FirstOrDefault(u => u.Cash >= 0);
 
             if (stock != null && stock.PurchasedCount > 0)
