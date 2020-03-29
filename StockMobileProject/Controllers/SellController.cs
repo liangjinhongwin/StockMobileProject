@@ -33,7 +33,7 @@ namespace StockMobileProject.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult SetBuy ([FromBody]SellModel sellOrder)
+        public IActionResult SetSell ([FromBody]SellModel sellOrder)
         {
             var email = HttpContext.User.Claims.ElementAt(0).Value;
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -42,7 +42,7 @@ namespace StockMobileProject.Controllers
 
             if (stock != null && stock.PurchasedCount > 0)
             {
-                if (stock.PurchasedCount > sellOrder.Count)
+                if (stock.PurchasedCount >= sellOrder.Count)
                 {
                     try
                     {
@@ -53,6 +53,8 @@ namespace StockMobileProject.Controllers
                         return Ok(new
                         {
                             status = 200,
+                            CurrentCash = user.Cash,
+                            remaining = stock.PurchasedCount,
                             detail = "Your sell order has been processed."
                         });
                     }
