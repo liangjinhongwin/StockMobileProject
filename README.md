@@ -14,6 +14,7 @@ A mobile application backend built using Visual Studio
 - Get Watchlist 
 - Get Purchased Stocks
 - See User's Portfolio Performance
+- Update User's Portfolio Performance
 
 ## Requirements
 
