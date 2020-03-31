@@ -32,3 +32,8 @@ git clone https://github.com/liangjinhongwin/StockMobileProject
 ### 2. Start your app
 
 Open the solution in the folder created with git clone
+
+### 3. Additional information
+- sample account
+- username:a@a.com
+- password:P@ssw0rd!
