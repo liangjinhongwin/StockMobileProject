@@ -38,7 +38,7 @@ namespace StockMobileProject.Controllers
 
             if ( stocks == null || stocks.Count() == 0 )
             {
-                return NotFound(new { status = 404, datail = "No purchased list for the user." });
+                return BadRequest(new { status = 204, datail = "No purchased list for the user." });
             }
 
             var purchasedList = stocks.Select(s => new PurchasedModel()
